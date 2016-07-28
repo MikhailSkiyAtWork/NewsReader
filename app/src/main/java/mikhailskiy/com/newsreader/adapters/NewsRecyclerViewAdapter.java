@@ -39,7 +39,7 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
         holder.newsDescriptionTextView.setText(currenItem.getDescription());
 
         String imageUrl = currenItem.getImageUrl();
-
+        Picasso.with(holder.newsImageView.getContext()).load(imageUrl).into(holder.newsImageView);
         if (!"".equals(imageUrl)) {
             Picasso.with(holder.newsImageView.getContext()).load(imageUrl).placeholder(R.drawable.ic_photo).into(holder.newsImageView);
         } else {

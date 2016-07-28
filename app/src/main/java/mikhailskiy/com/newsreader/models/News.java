@@ -8,6 +8,12 @@ public class News {
     private String title_;
     private String description_;
 
+    public News(String imageUrl, String title, String description) {
+        this.imageUrl_ = imageUrl;
+        this.title_ = title;
+        this.description_ = description;
+    }
+
     public String getImageUrl() {
         return imageUrl_;
     }
