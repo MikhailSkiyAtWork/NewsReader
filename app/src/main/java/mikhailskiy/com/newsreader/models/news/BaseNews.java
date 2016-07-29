@@ -1,4 +1,4 @@
-package mikhailskiy.com.newsreader.models;
+package mikhailskiy.com.newsreader.models.news;
 
 import org.simpleframework.xml.Element;
 
@@ -7,7 +7,7 @@ import org.simpleframework.xml.Element;
  */
 public class BaseNews {
     // TODO delete this after Api integration
-    private String imageUrl_;
+    protected String imageUrl_;
     @Element(name = "title",required=false)
     private String title_;
     @Element(name = "link",required=false)
@@ -18,8 +18,6 @@ public class BaseNews {
     private String description_;
     @Element(name = "guid",required=false)
     private String guid_;
-    @Element(name = "author")
-    private String author_;
 
     public BaseNews() {
     }

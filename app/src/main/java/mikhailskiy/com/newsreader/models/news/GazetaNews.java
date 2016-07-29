@@ -1,4 +1,4 @@
-package mikhailskiy.com.newsreader.models;
+package mikhailskiy.com.newsreader.models.news;
 
 import org.simpleframework.xml.Element;
 
@@ -9,8 +9,8 @@ public class GazetaNews extends BaseNews {
     @Element(name = "author")
     private String author_;
 
-    public GazetaNews(String author_) {
-        this.author_ = author_;
+    public GazetaNews() {
+        super();
     }
 
     public String getAuthor() {

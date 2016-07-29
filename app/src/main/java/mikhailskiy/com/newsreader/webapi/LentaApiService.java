@@ -1,8 +1,6 @@
 package mikhailskiy.com.newsreader.webapi;
 
-import java.util.List;
-
-import mikhailskiy.com.newsreader.models.LentaNews;
+import mikhailskiy.com.newsreader.models.RssInfoLenta;
 import retrofit2.Call;
 import retrofit2.http.GET;
 
@@ -11,5 +9,5 @@ import retrofit2.http.GET;
  */
 public interface LentaApiService {
     @GET("/rss")
-    Call<List<LentaNews>> getLentaNews();
+    Call<RssInfoLenta> getLentaNews();
 }

@@ -17,7 +17,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mikhailskiy.com.newsreader.R;
-import mikhailskiy.com.newsreader.models.BaseNews;
+import mikhailskiy.com.newsreader.models.news.BaseNews;
+import mikhailskiy.com.newsreader.models.news.LentaNews;
 
 /**
  * Created by Mikhail on 28.07.16.
@@ -35,11 +36,11 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         BaseNews currenItem = allBaseNews_.get(position);
+
         holder.newsTitleTextView.setText(currenItem.getTitle());
         holder.newsDescriptionTextView.setText(currenItem.getDescription());
 
-        String imageUrl = currenItem.getImageUrl();
-        Picasso.with(holder.newsImageView.getContext()).load(imageUrl).into(holder.newsImageView);
+        String imageUrl = getImageUrl(currenItem);
         if (!"".equals(imageUrl)) {
             Picasso.with(holder.newsImageView.getContext()).load(imageUrl).placeholder(R.drawable.ic_photo).into(holder.newsImageView);
         } else {
@@ -78,5 +79,16 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
         int oldSize = allBaseNews_.size();
         allBaseNews_.addAll(freshNews);
         notifyItemRangeInserted(oldSize, freshNews.size());
+    }
+
+    private String getImageUrl(BaseNews baseNewsItem) {
+        String imageUrl = "";
+        if (baseNewsItem instanceof LentaNews) {
+            LentaNews lentaNewsItem = (LentaNews) baseNewsItem;
+            if (lentaNewsItem.getEnclosure() != null) {
+                imageUrl = lentaNewsItem.getEnclosure().getUrl();
+            }
+        }
+        return imageUrl;
     }
 }
