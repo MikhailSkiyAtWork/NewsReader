@@ -19,6 +19,11 @@ android {
     }
 }
 
+configurations {
+    compile.exclude group: 'stax'
+    compile.exclude group: 'xpp3'
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
@@ -26,4 +31,7 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$rootProject.ext.supportLibraryVersion"
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.squareup.retrofit2:converter-simplexml:2.1.0'
+    compile 'org.simpleframework:simple-xml:2.7.1'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
 }

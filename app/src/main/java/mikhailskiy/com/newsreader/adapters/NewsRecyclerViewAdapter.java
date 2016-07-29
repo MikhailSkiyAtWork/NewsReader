@@ -17,14 +17,14 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mikhailskiy.com.newsreader.R;
-import mikhailskiy.com.newsreader.models.News;
+import mikhailskiy.com.newsreader.models.BaseNews;
 
 /**
  * Created by Mikhail on 28.07.16.
  */
 public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerViewAdapter.ViewHolder> {
 
-    private List<News> allNews_ = new ArrayList<>();
+    private List<BaseNews> allBaseNews_ = new ArrayList<>();
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -34,7 +34,7 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        News currenItem = allNews_.get(position);
+        BaseNews currenItem = allBaseNews_.get(position);
         holder.newsTitleTextView.setText(currenItem.getTitle());
         holder.newsDescriptionTextView.setText(currenItem.getDescription());
 
@@ -71,12 +71,12 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
 
     @Override
     public int getItemCount() {
-        return allNews_.size();
+        return allBaseNews_.size();
     }
 
-    public void addNews(@NonNull List<News> freshNews) {
-        int oldSize = allNews_.size();
-        allNews_.addAll(freshNews);
+    public void addNews(@NonNull List<BaseNews> freshNews) {
+        int oldSize = allBaseNews_.size();
+        allBaseNews_.addAll(freshNews);
         notifyItemRangeInserted(oldSize, freshNews.size());
     }
 }
