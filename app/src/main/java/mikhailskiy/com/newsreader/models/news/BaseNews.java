@@ -2,22 +2,26 @@ package mikhailskiy.com.newsreader.models.news;
 
 import org.simpleframework.xml.Element;
 
+import mikhailskiy.com.newsreader.models.Enclosure;
+
 /**
  * Created by Mikhail on 28.07.16.
  */
 public class BaseNews {
     // TODO delete this after Api integration
     protected String imageUrl_;
-    @Element(name = "title",required=false)
+    @Element(name = "title", required = false)
     private String title_;
-    @Element(name = "link",required=false)
+    @Element(name = "link", required = false)
     private String link_;
-    @Element(name = "pubDate",required=false)
+    @Element(name = "pubDate")
     private String pubDate_;
-    @Element(name = "description",required=false)
+    @Element(name = "description", required = false)
     private String description_;
-    @Element(name = "guid",required=false)
+    @Element(name = "guid", required = false)
     private String guid_;
+    @Element(name = "enclosure", required = false)
+    private Enclosure enclosure_;
 
     public BaseNews() {
     }
@@ -38,5 +42,13 @@ public class BaseNews {
 
     public String getDescription() {
         return description_;
+    }
+
+    public String getPubDate() {
+        return pubDate_;
+    }
+
+    public Enclosure getEnclosure() {
+        return enclosure_;
     }
 }
