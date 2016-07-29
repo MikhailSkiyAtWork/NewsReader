@@ -9,6 +9,13 @@
                android:layout_width="@dimen/image_width"
                android:layout_height="@dimen/image_height"/>
 
+    <TextView android:id="@+id/date_text_view"
+              android:layout_width="@dimen/image_width"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/news_image_view"
+              android:gravity="center"
+              tools:text="12.05.2014"/>
+
     <TextView android:id="@+id/news_title_text_view"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
