@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.Bind;
@@ -39,7 +41,6 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
 
         holder.newsTitleTextView.setText(currenItem.getTitle());
         holder.newsDescriptionTextView.setText(currenItem.getDescription());
-
         holder.dateTextView.setText(DateHelper.getReadableDate(currenItem.getPubDate()));
 
         String imageUrl = getImageUrl(currenItem);
@@ -82,7 +83,19 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
 
     public void addNews(@NonNull List<BaseNews> freshNews) {
         int oldSize = allBaseNews_.size();
+
         allBaseNews_.addAll(freshNews);
+        Collections.sort(allBaseNews_, new Comparator<BaseNews>() {
+            @Override
+            public int compare(BaseNews lhs, BaseNews rhs) {
+                if (DateHelper.getMillisFromServerTime(lhs.getPubDate()) > DateHelper.getMillisFromServerTime(rhs.getPubDate())) {
+                    return 1;
+                } else if (DateHelper.getMillisFromServerTime(lhs.getPubDate()) > DateHelper.getMillisFromServerTime(rhs.getPubDate())) {
+                    return -1;
+                }
+                return 0;
+            }
+        });
         notifyItemRangeInserted(oldSize, freshNews.size());
     }
 
