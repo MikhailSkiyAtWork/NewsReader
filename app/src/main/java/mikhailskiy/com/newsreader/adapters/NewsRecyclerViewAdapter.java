@@ -144,21 +144,23 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
     }
 
     public void addNews(@NonNull List<BaseNews> freshNews) {
-        int oldSize = allBaseNews_.size();
 
         allBaseNews_.addAll(freshNews);
         Collections.sort(allBaseNews_, new Comparator<BaseNews>() {
             @Override
             public int compare(BaseNews lhs, BaseNews rhs) {
-                if (DateHelper.getMillisFromServerTime(lhs.getPubDate()) > DateHelper.getMillisFromServerTime(rhs.getPubDate())) {
+                long lhsPubTime = DateHelper.getMillisFromServerTime(lhs.getPubDate());
+                long rhsPubTime = DateHelper.getMillisFromServerTime(rhs.getPubDate());
+
+                if (lhsPubTime < rhsPubTime) {
                     return 1;
-                } else if (DateHelper.getMillisFromServerTime(lhs.getPubDate()) > DateHelper.getMillisFromServerTime(rhs.getPubDate())) {
+                } else if (lhsPubTime > rhsPubTime) {
                     return -1;
                 }
                 return 0;
             }
         });
-        notifyItemRangeInserted(oldSize, freshNews.size());
+        notifyDataSetChanged();
     }
 
     private String getImageUrl(BaseNews baseNewsItem) {
