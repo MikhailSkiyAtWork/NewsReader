@@ -1,35 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout android:id="@+id/content_layout"
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/margin_small">
+                android:layout_height="wrap_content">
 
-    <ImageView android:id="@+id/news_image_view"
-               android:layout_width="@dimen/image_width"
-               android:layout_height="@dimen/image_height"/>
+    <RelativeLayout android:id="@+id/news_header_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-    <TextView android:id="@+id/date_text_view"
-              android:layout_width="@dimen/image_width"
-              android:layout_height="wrap_content"
-              android:layout_below="@+id/news_image_view"
-              android:gravity="center"
-              tools:text="12.05.2014"/>
+        <ImageView android:id="@+id/news_image_view"
+                   android:layout_width="@dimen/image_width"
+                   android:layout_height="@dimen/image_height"
+                   android:layout_margin="@dimen/margin_xsmall"/>
 
-    <TextView android:id="@+id/news_title_text_view"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginLeft="@dimen/margin_normal"
-              android:layout_toRightOf="@+id/news_image_view"
-              android:textSize="@dimen/medium_size"
-              tools:text="The news title"/>
+        <TextView android:id="@+id/date_text_view"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginStart="@dimen/margin_normal"
+                  android:layout_toEndOf="@+id/news_image_view"
+                  tools:text="12.05.2014"/>
+
+        <TextView android:id="@+id/source_text_view"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_above="@+id/news_title_text_view"
+                  android:layout_alignParentEnd="true"
+                  tools:text="Lenta.ru"/>
+
+
+        <TextView android:id="@+id/news_title_text_view"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@+id/date_text_view"
+                  android:layout_marginStart="@dimen/margin_normal"
+                  android:layout_toEndOf="@+id/news_image_view"
+                  android:ellipsize="end"
+                  android:maxLines="3"
+                  android:textSize="@dimen/medium_size"
+                  tools:text="The news title"/>
+    </RelativeLayout>
 
     <TextView android:id="@+id/news_description_text_view"
               android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_below="@+id/news_title_text_view"
-              android:layout_marginLeft="@dimen/margin_normal"
-              android:layout_toRightOf="@+id/news_image_view"
+              android:layout_height="match_parent"
+              android:layout_below="@+id/news_header_layout"
+              android:visibility="gone"
               tools:text="Very long description"/>
 
 </RelativeLayout>

@@ -11,7 +11,7 @@ import mikhailskiy.com.newsreader.models.channels.GazetaChannel;
  */
 @Root
 public class RssInfo {
-    @Element(name="channel")
+    @Element(name = "channel")
     private GazetaChannel channel_;
 
     @Attribute(name = "version")

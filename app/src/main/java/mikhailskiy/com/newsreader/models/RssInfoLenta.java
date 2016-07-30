@@ -11,15 +11,14 @@ import mikhailskiy.com.newsreader.models.channels.LentaChannel;
  */
 @Root
 public class RssInfoLenta {
+    @Element(name = "channel")
+    private LentaChannel channel_;
 
-        @Element(name="channel")
-        private LentaChannel channel_;
+    @Attribute(name = "version")
+    private String version_;
 
-        @Attribute(name = "version")
-        private String version_;
-
-        public LentaChannel getChannel() {
-            return channel_;
-        }
+    public LentaChannel getChannel() {
+        return channel_;
+    }
 
 }

@@ -1,9 +1,8 @@
 package mikhailskiy.com.newsreader.utils;
 
-import android.content.Context;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -12,8 +11,8 @@ import java.util.TimeZone;
  * Created by Mikhail on 29.07.16.
  */
 public class DateHelper {
-    private final SimpleDateFormat serverDateFormat_ = new SimpleDateFormat("EE, dd MMM yyyy HH:mm:ss zzzz", Locale.getDefault());
-    private final SimpleDateFormat appDateFormat = new SimpleDateFormat("MM-dd-yy", Locale.getDefault());
+    private final static SimpleDateFormat serverDateFormat_ = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.getDefault());
+    private final static SimpleDateFormat appDateFormat = new SimpleDateFormat("MMM d 'at' hh:mm:ss", Locale.getDefault());
 
     private static volatile DateHelper instance_;
 
@@ -38,10 +37,6 @@ public class DateHelper {
         return serverDateFormat_;
     }
 
-    public SimpleDateFormat getAppDateFormat() {
-        return appDateFormat;
-    }
-
     public static long getMillisFromServerTime(String time) {
         Date date = null;
         long millis = 0;
@@ -56,14 +51,14 @@ public class DateHelper {
         return millis;
     }
 
-    public long getMillis(Context context, String time) {
-        return getMillisFromServerTime(time);
-    }
 
     public static String getReadableDate(String time) {
         long postTimeMillis = getMillisFromServerTime(time);
-        Date postDate = new Date(postTimeMillis);
-        return DateHelper.getInstance().getAppDateFormat().format(postDate);
+
+        // Create a calendar object that will convert the date and time value in milliseconds to date.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(postTimeMillis);
+        return appDateFormat.format(calendar.getTime());
     }
 }
 
