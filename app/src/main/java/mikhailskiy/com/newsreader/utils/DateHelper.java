@@ -2,7 +2,6 @@ package mikhailskiy.com.newsreader.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -11,8 +10,8 @@ import java.util.TimeZone;
  * Created by Mikhail on 29.07.16.
  */
 public class DateHelper {
-    private final static SimpleDateFormat serverDateFormat_ = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.getDefault());
-    private final static SimpleDateFormat appDateFormat = new SimpleDateFormat("MMM d 'at' hh:mm:ss", Locale.getDefault());
+    private final static SimpleDateFormat serverDateFormat_ = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss zzz", Locale.US);
+    private final static SimpleDateFormat appDateFormat = new SimpleDateFormat("d MMM HH:mm:ss", Locale.getDefault());
 
     private static volatile DateHelper instance_;
 
@@ -51,14 +50,9 @@ public class DateHelper {
         return millis;
     }
 
-
     public static String getReadableDate(String time) {
         long postTimeMillis = getMillisFromServerTime(time);
-
-        // Create a calendar object that will convert the date and time value in milliseconds to date.
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(postTimeMillis);
-        return appDateFormat.format(calendar.getTime());
+        return appDateFormat.format(postTimeMillis);
     }
 }
 
