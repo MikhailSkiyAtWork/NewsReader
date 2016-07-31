@@ -11,10 +11,12 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        project.ext.set("archivesBaseName", "ValuyskiyMikhail");
     }
     buildTypes {
         release {
             minifyEnabled false
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
