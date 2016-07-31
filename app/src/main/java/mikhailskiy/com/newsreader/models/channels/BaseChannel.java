@@ -9,7 +9,7 @@ import java.util.List;
 import mikhailskiy.com.newsreader.models.news.BaseNews;
 
 /**
- * Created by Mikhail on 29.07.16.
+ * Created by Mikhail on 01.08.16.
  */
 @Root(strict = false)
 public class BaseChannel {
