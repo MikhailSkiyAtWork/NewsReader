@@ -11,17 +11,17 @@ import org.simpleframework.xml.Root;
 @Root(strict = false)
 public class Enclosure {
     @Attribute(name = "url")
-    private String url;
+    private String url_;
 
     public String getUrl() {
-        return url;
+        return url_;
     }
 
     public Enclosure() {
     }
 
     public Enclosure(String url) {
-        this.url = url;
+        this.url_ = url;
     }
 
     public static class EnclosureConverter extends TypeConverter<String, Enclosure> {

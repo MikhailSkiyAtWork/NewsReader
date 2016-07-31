@@ -145,10 +145,12 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
     }
 
     public void addNews(@NonNull List<BaseNews> freshNews) {
-        clearNews();
-        allBaseNews_.addAll(freshNews);
-        Collections.sort(allBaseNews_, BaseNews.COMPARATOR_BY_DATE_DESC);
-        notifyDataSetChanged();
+        if (freshNews.size() > 0) {
+            clearNews();
+            allBaseNews_.addAll(freshNews);
+            Collections.sort(allBaseNews_, BaseNews.COMPARATOR_BY_DATE_DESC);
+            notifyDataSetChanged();
+        }
     }
 
     public void clearNews() {
