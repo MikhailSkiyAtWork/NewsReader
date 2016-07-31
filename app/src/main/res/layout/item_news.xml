@@ -37,7 +37,7 @@
                   android:layout_marginStart="@dimen/margin_normal"
                   android:layout_toEndOf="@+id/news_image_view"
                   android:ellipsize="end"
-                  android:maxLines="3"
+                  android:maxLines="2"
                   android:textSize="@dimen/medium_size"
                   tools:text="The news title"/>
     </RelativeLayout>

@@ -39,6 +39,8 @@ import mikhailskiy.com.newsreader.utils.TextHelper;
  */
 public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerViewAdapter.ViewHolder> {
 
+    private static final int MAX_TITLE_LINES_EXPANDED = 4;
+    private static final int MAX_TITLE_LINES_COLLAPSED = 2;
     @Inject Picasso picasso;
 
     private List<BaseNews> allBaseNews_ = new ArrayList<>();
@@ -85,10 +87,12 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
             valueAnimator = ValueAnimator.ofInt(originalHeight_, originalHeight_ + detailsTextHeight);
             animation = AnimationUtils.loadAnimation(context, R.anim.fade_in_animation);
             viewHolder.newsDescriptionTextView.setVisibility(View.VISIBLE);
+            viewHolder.newsTitleTextView.setMaxLines(MAX_TITLE_LINES_EXPANDED);
         } else {
             valueAnimator = ValueAnimator.ofInt(originalHeight_ + detailsTextHeight, originalHeight_);
             animation = AnimationUtils.loadAnimation(context, R.anim.fade_out_animation);
             viewHolder.newsDescriptionTextView.setVisibility(View.GONE);
+            viewHolder.newsTitleTextView.setMaxLines(MAX_TITLE_LINES_COLLAPSED);
         }
         valueAnimator.setDuration(context.getResources().getInteger(R.integer.animation_duration));
         valueAnimator.setInterpolator(new LinearInterpolator());
