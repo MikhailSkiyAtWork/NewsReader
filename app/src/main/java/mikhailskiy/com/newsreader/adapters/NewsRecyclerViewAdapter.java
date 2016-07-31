@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import mikhailskiy.com.newsreader.R;
@@ -37,9 +39,9 @@ import mikhailskiy.com.newsreader.utils.TextHelper;
  */
 public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerViewAdapter.ViewHolder> {
 
+    @Inject Picasso picasso;
+
     private List<BaseNews> allBaseNews_ = new ArrayList<>();
-    private List<BaseNews> gazetaNews_ = new ArrayList<>();
-    private List<BaseNews> lentaNews = new ArrayList<>();
     private int originalHeight_ = 0;
     private int detailsTextHeight = 0;
 
@@ -62,7 +64,7 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
 
         String imageUrl = getImageUrl(currentItem);
         if (!"".equals(imageUrl)) {
-            Picasso.with(context).load(imageUrl).placeholder(R.drawable.ic_photo).into(holder.newsImageView);
+            picasso.with(context).load(imageUrl).placeholder(R.drawable.ic_photo).into(holder.newsImageView);
         } else {
             holder.newsImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_photo));
         }

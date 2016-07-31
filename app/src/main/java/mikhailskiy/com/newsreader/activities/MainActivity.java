@@ -12,8 +12,11 @@ import com.raizlabs.android.dbflow.structure.database.transaction.Transaction;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import mikhailskiy.com.newsreader.NewsReaderApplication;
 import mikhailskiy.com.newsreader.R;
 import mikhailskiy.com.newsreader.adapters.NewsRecyclerViewAdapter;
 import mikhailskiy.com.newsreader.db.ListQueryFinishedListener;
@@ -21,7 +24,8 @@ import mikhailskiy.com.newsreader.db.storage.NewsStorage;
 import mikhailskiy.com.newsreader.models.RssInfo;
 import mikhailskiy.com.newsreader.models.news.BaseNews;
 import mikhailskiy.com.newsreader.ui.DividerItemDecoration;
-import mikhailskiy.com.newsreader.webapi.WebApiProvider;
+import mikhailskiy.com.newsreader.webapi.GazetaApiService;
+import mikhailskiy.com.newsreader.webapi.LentaApiService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,7 +33,6 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private final NewsRecyclerViewAdapter newsAdapter_ = new NewsRecyclerViewAdapter();
-    private NewsStorage storage = new NewsStorage();
 
     @Bind(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -37,10 +40,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Bind(R.id.news_recycler_view)
     RecyclerView newsRecyclerView;
 
+    @Inject NewsStorage storage;
+    @Inject GazetaApiService gazetaApiService;
+    @Inject LentaApiService lentaApiService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ((NewsReaderApplication) getApplication()).component().inject(this);
         ButterKnife.bind(this);
 
         newsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -65,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     private void getNews() {
-        Call<RssInfo> gazetaCall = WebApiProvider.getGazetaApiService().getGazetaNews();
+        Call<RssInfo> gazetaCall = gazetaApiService.getGazetaNews();
         gazetaCall.enqueue(new Callback<RssInfo>() {
             @Override
             public void onResponse(Call<RssInfo> call, Response<RssInfo> response) {
@@ -92,9 +100,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                     if (errorMessage == null) {
                                         errorMessage = getString(R.string.error_unexpected_respond);
                                     }
-                                    if (MainActivity.this != null) {
-                                        Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-                                    }
+                                    Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                                 }
                             }
                     );
@@ -108,7 +114,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             public void onFailure(Call<RssInfo> call, Throwable t) {
                 swipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(getApplicationContext(), R.string.error_sending_request, Toast.LENGTH_SHORT).show();
-
                 storage.get(new ListQueryFinishedListener<BaseNews>() {
                     @Override
                     public void onQueryFinished(List<BaseNews> items) {
@@ -118,15 +123,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         });
 
-        Call<RssInfo> lentaCall = WebApiProvider.getLentaApiService().getLentaNews();
+        Call<RssInfo> lentaCall = lentaApiService.getLentaNews();
 
         lentaCall.enqueue(new Callback<RssInfo>() {
             @Override
             public void onResponse(Call<RssInfo> call, Response<RssInfo> response) {
                 if (response.isSuccessful()) {
-                    ArrayList<BaseNews> baseNewses = new ArrayList<>();
-                    baseNewses.addAll(response.body().getChannel().getNewsList());
-                    storage.save(baseNewses,
+                    ArrayList<BaseNews> baseNewsList = new ArrayList<>();
+                    baseNewsList.addAll(response.body().getChannel().getNewsList());
+                    storage.save(baseNewsList,
                             new Transaction.Success() {
                                 @Override
                                 public void onSuccess(Transaction transaction) {

@@ -35,8 +35,10 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-simplexml:2.1.0'
     compile 'org.simpleframework:simple-xml:2.7.1'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'org.greenrobot:eventbus:3.0.0'
     apt "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflowVersion}"
     compile "com.github.Raizlabs.DBFlow:dbflow-core:${dbflowVersion}"
     compile "com.github.Raizlabs.DBFlow:dbflow:${dbflowVersion}"
+    compile "com.google.dagger:dagger:${daggerVersion}"
+    apt "com.google.dagger:dagger-compiler:${daggerVersion}"
+    provided 'org.glassfish:javax.annotation:10.0-b28'
 }

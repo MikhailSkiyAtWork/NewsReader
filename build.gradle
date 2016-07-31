@@ -30,4 +30,5 @@ ext {
     // App dependencies
     supportLibraryVersion = '23.4.0'
     dbflowVersion = "3.0.1"
+    daggerVersion = "2.0"
 }

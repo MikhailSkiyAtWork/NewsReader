@@ -3,4 +3,7 @@
 
     <string name="error_sending_request">Error sending request. Check internet connection</string>
     <string name="error_unexpected_respond">Unexpected error. Try again later</string>
+
+    <string name="gazeta_url" translatable="false">http://www.gazeta.ru/</string>
+    <string name="lenta_url" translatable="false">https://lenta.ru/</string>
 </resources>
