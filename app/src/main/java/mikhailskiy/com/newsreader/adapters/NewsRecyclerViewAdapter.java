@@ -23,7 +23,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import butterknife.Bind;
@@ -39,6 +38,8 @@ import mikhailskiy.com.newsreader.utils.TextHelper;
 public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerViewAdapter.ViewHolder> {
 
     private List<BaseNews> allBaseNews_ = new ArrayList<>();
+    private List<BaseNews> gazetaNews_ = new ArrayList<>();
+    private List<BaseNews> lentaNews = new ArrayList<>();
     private int originalHeight_ = 0;
     private int detailsTextHeight = 0;
 
@@ -144,22 +145,9 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
     }
 
     public void addNews(@NonNull List<BaseNews> freshNews) {
-
+        clearNews();
         allBaseNews_.addAll(freshNews);
-        Collections.sort(allBaseNews_, new Comparator<BaseNews>() {
-            @Override
-            public int compare(BaseNews lhs, BaseNews rhs) {
-                long lhsPubTime = DateHelper.getMillisFromServerTime(lhs.getPubDate());
-                long rhsPubTime = DateHelper.getMillisFromServerTime(rhs.getPubDate());
-
-                if (lhsPubTime < rhsPubTime) {
-                    return 1;
-                } else if (lhsPubTime > rhsPubTime) {
-                    return -1;
-                }
-                return 0;
-            }
-        });
+        Collections.sort(allBaseNews_, BaseNews.COMPARATOR_BY_DATE_DESC);
         notifyDataSetChanged();
     }
 

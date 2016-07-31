@@ -1,6 +1,8 @@
 package mikhailskiy.com.newsreader.activities;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
@@ -15,24 +17,22 @@ import butterknife.ButterKnife;
 import mikhailskiy.com.newsreader.R;
 import mikhailskiy.com.newsreader.adapters.NewsRecyclerViewAdapter;
 import mikhailskiy.com.newsreader.db.ListQueryFinishedListener;
-import mikhailskiy.com.newsreader.db.storage.GazetaNewsListStorage;
-import mikhailskiy.com.newsreader.db.storage.LentaNewsStorage;
+import mikhailskiy.com.newsreader.db.storage.NewsStorage;
 import mikhailskiy.com.newsreader.models.RssInfo;
-import mikhailskiy.com.newsreader.models.RssInfoLenta;
 import mikhailskiy.com.newsreader.models.news.BaseNews;
-import mikhailskiy.com.newsreader.models.news.GazetaNews;
-import mikhailskiy.com.newsreader.models.news.LentaNews;
 import mikhailskiy.com.newsreader.ui.DividerItemDecoration;
 import mikhailskiy.com.newsreader.webapi.WebApiProvider;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private final NewsRecyclerViewAdapter newsAdapter_ = new NewsRecyclerViewAdapter();
-    private GazetaNewsListStorage storage = new GazetaNewsListStorage();
-    private LentaNewsStorage lentaNewsStorage = new LentaNewsStorage();
+    private NewsStorage storage = new NewsStorage();
+
+    @Bind(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Bind(R.id.news_recycler_view)
     RecyclerView newsRecyclerView;
@@ -46,33 +46,40 @@ public class MainActivity extends BaseActivity {
         newsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         newsRecyclerView.setAdapter(newsAdapter_);
         newsRecyclerView.addItemDecoration(new DividerItemDecoration(this));
-        getRealNews();
+
+        swipeRefreshLayout.setOnRefreshListener(this);
+
+        swipeRefreshLayout.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        swipeRefreshLayout.setRefreshing(true);
+                                        getNews();
+                                    }
+                                }
+        );
     }
 
-    private void getRealNews() {
-        if (isRequestInProgress_) {
-            return;
-        }
+    @Override
+    public void onRefresh() {
+        getNews();
+    }
 
-        isRequestInProgress_ = true;
-        showProgressBar();
-
+    private void getNews() {
         Call<RssInfo> gazetaCall = WebApiProvider.getGazetaApiService().getGazetaNews();
-
         gazetaCall.enqueue(new Callback<RssInfo>() {
             @Override
             public void onResponse(Call<RssInfo> call, Response<RssInfo> response) {
                 if (response.isSuccessful()) {
-                    storage.save(response.body().getChannel().getNewsList(),
+                    ArrayList<BaseNews> baseNewses = new ArrayList<>();
+                    baseNewses.addAll(response.body().getChannel().getNewsList());
+                    storage.save(baseNewses,
                             new Transaction.Success() {
                                 @Override
                                 public void onSuccess(Transaction transaction) {
-                                    storage.get(new ListQueryFinishedListener<GazetaNews>() {
+                                    storage.get(new ListQueryFinishedListener<BaseNews>() {
                                         @Override
-                                        public void onQueryFinished(List<GazetaNews> items) {
-                                            List<BaseNews> news = new ArrayList<>();
-                                            news.addAll(items);
-                                            newsAdapter_.addNews(news);
+                                        public void onQueryFinished(List<BaseNews> items) {
+                                            newsAdapter_.addNews(items);
                                         }
                                     });
                                 }
@@ -93,36 +100,40 @@ public class MainActivity extends BaseActivity {
                     );
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.error_unexpected_respond, Toast.LENGTH_SHORT).show();
-
                 }
-                isRequestInProgress_ = false;
-                hideProgressBar();
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<RssInfo> call, Throwable t) {
-                isRequestInProgress_ = false;
-                hideProgressBar();
+                swipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(getApplicationContext(), R.string.error_sending_request, Toast.LENGTH_SHORT).show();
+
+                storage.get(new ListQueryFinishedListener<BaseNews>() {
+                    @Override
+                    public void onQueryFinished(List<BaseNews> items) {
+                        newsAdapter_.addNews(items);
+                    }
+                });
             }
         });
 
-        Call<RssInfoLenta> lentaCall = WebApiProvider.getLentaApiService().getLentaNews();
+        Call<RssInfo> lentaCall = WebApiProvider.getLentaApiService().getLentaNews();
 
-        lentaCall.enqueue(new Callback<RssInfoLenta>() {
+        lentaCall.enqueue(new Callback<RssInfo>() {
             @Override
-            public void onResponse(Call<RssInfoLenta> call, Response<RssInfoLenta> response) {
+            public void onResponse(Call<RssInfo> call, Response<RssInfo> response) {
                 if (response.isSuccessful()) {
-                    lentaNewsStorage.save(response.body().getChannel().getLentaNewsList(),
+                    ArrayList<BaseNews> baseNewses = new ArrayList<>();
+                    baseNewses.addAll(response.body().getChannel().getNewsList());
+                    storage.save(baseNewses,
                             new Transaction.Success() {
                                 @Override
                                 public void onSuccess(Transaction transaction) {
-                                    lentaNewsStorage.get(new ListQueryFinishedListener<LentaNews>() {
+                                    storage.get(new ListQueryFinishedListener<BaseNews>() {
                                         @Override
-                                        public void onQueryFinished(List<LentaNews> items) {
-                                            List<BaseNews> news = new ArrayList<>();
-                                            news.addAll(items);
-                                            newsAdapter_.addNews(news);
+                                        public void onQueryFinished(List<BaseNews> items) {
+                                            newsAdapter_.addNews(items);
                                         }
                                     });
                                 }
@@ -144,15 +155,19 @@ public class MainActivity extends BaseActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.error_unexpected_respond, Toast.LENGTH_SHORT).show();
                 }
-                isRequestInProgress_ = false;
-                hideProgressBar();
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
-            public void onFailure(Call<RssInfoLenta> call, Throwable t) {
-                isRequestInProgress_ = false;
-                hideProgressBar();
+            public void onFailure(Call<RssInfo> call, Throwable t) {
+                swipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(getApplicationContext(), R.string.error_sending_request, Toast.LENGTH_SHORT).show();
+                storage.get(new ListQueryFinishedListener<BaseNews>() {
+                    @Override
+                    public void onQueryFinished(List<BaseNews> items) {
+                        newsAdapter_.addNews(items);
+                    }
+                });
             }
         });
     }

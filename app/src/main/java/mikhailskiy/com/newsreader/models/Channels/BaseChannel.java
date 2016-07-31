@@ -1,7 +1,12 @@
 package mikhailskiy.com.newsreader.models.channels;
 
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
+
+import java.util.List;
+
+import mikhailskiy.com.newsreader.models.news.BaseNews;
 
 /**
  * Created by Mikhail on 29.07.16.
@@ -14,6 +19,8 @@ public class BaseChannel {
     private String description_;
     @Element(name = "language")
     private String language_;
+    @ElementList(entry = "item", inline = true)
+    private List<BaseNews> itemList_;
 
     public String getTitle() {
         return title_;
@@ -37,5 +44,9 @@ public class BaseChannel {
 
     public void setLanguage(String language) {
         this.language_ = language;
+    }
+
+    public List<BaseNews> getNewsList() {
+        return itemList_;
     }
 }

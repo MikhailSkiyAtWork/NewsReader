@@ -4,7 +4,7 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
-import mikhailskiy.com.newsreader.models.channels.GazetaChannel;
+import mikhailskiy.com.newsreader.models.channels.BaseChannel;
 
 /**
  * Created by Mikhail on 28.07.16.
@@ -12,12 +12,12 @@ import mikhailskiy.com.newsreader.models.channels.GazetaChannel;
 @Root
 public class RssInfo {
     @Element(name = "channel")
-    private GazetaChannel channel_;
+    private BaseChannel channel_;
 
     @Attribute(name = "version")
     private String version_;
 
-    public GazetaChannel getChannel() {
+    public BaseChannel getChannel() {
         return channel_;
     }
 }
