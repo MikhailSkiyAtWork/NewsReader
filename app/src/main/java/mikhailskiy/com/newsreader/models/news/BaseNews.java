@@ -36,7 +36,7 @@ public class BaseNews extends BaseModel {
     @Element(name = "description", required = false)
     private String description;
 
-    @Column
+    @Column(typeConverter = Enclosure.EnclosureConverter.class)
     @Element(name = "enclosure", required = false)
     private Enclosure enclosure;
 
@@ -90,4 +90,5 @@ public class BaseNews extends BaseModel {
     public void setEnclosure(Enclosure enclosure) {
         this.enclosure = enclosure;
     }
+
 }

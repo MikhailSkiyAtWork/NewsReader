@@ -163,6 +163,14 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
         notifyDataSetChanged();
     }
 
+    public void clearNews() {
+        int oldCount = allBaseNews_.size();
+        allBaseNews_.clear();
+        if (oldCount > 0) {
+            notifyItemRangeRemoved(0, oldCount);
+        }
+    }
+
     private String getImageUrl(BaseNews baseNewsItem) {
         String imageUrl = "";
         if (baseNewsItem.getEnclosure() != null) {

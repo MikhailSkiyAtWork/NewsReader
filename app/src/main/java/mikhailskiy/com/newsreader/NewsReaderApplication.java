@@ -2,6 +2,9 @@ package mikhailskiy.com.newsreader;
 
 import android.app.Application;
 
+import com.raizlabs.android.dbflow.config.FlowConfig;
+import com.raizlabs.android.dbflow.config.FlowManager;
+
 import mikhailskiy.com.newsreader.webapi.WebApiProvider;
 
 /**
@@ -13,5 +16,6 @@ public class NewsReaderApplication extends Application {
     public void onCreate() {
         super.onCreate();
         WebApiProvider.init(this);
+        FlowManager.init(new FlowConfig.Builder(this).build());
     }
 }
