@@ -43,7 +43,7 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
     private static final int MAX_TITLE_LINES_COLLAPSED = 2;
     @Inject Picasso picasso;
 
-    private List<BaseNews> allBaseNews_ = new ArrayList<>();
+    private final List<BaseNews> allBaseNews_ = new ArrayList<>();
     private int originalHeight_ = 0;
     private int detailsTextHeight = 0;
 
@@ -99,7 +99,7 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             public void onAnimationUpdate(ValueAnimator animation) {
                 Integer value = (Integer) animation.getAnimatedValue();
-                v.getLayoutParams().height = value.intValue();
+                v.getLayoutParams().height = value;
                 v.requestLayout();
             }
         });

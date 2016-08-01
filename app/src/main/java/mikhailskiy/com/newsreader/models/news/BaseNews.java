@@ -96,7 +96,7 @@ public class BaseNews extends BaseModel {
         this.enclosure = enclosure;
     }
 
-    public static Comparator<BaseNews> COMPARATOR_BY_DATE_DESC = new Comparator<BaseNews>() {
+    public static final Comparator<BaseNews> COMPARATOR_BY_DATE_DESC = new Comparator<BaseNews>() {
         @Override
         public int compare(BaseNews lhs, BaseNews rhs) {
             long lhsPubTime = DateHelper.getMillisFromServerTime(lhs.getPubDate());

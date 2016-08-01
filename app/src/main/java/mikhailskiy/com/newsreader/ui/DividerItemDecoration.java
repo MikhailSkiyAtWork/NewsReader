@@ -18,13 +18,6 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     private boolean ignoreParentPaddings_ = false;
 
     /**
-     * Constructor with custom dividers
-     */
-    public DividerItemDecoration(Drawable dividerDrawable) {
-        this.dividerDrawable_ = dividerDrawable;
-    }
-
-    /**
      * Constructor with default dividers
      */
     public DividerItemDecoration(Context context) {
@@ -49,15 +42,6 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
             dividerDrawable_.setBounds(left, top, right, bottom);
             dividerDrawable_.draw(c);
         }
-    }
-
-
-    /**
-     * Sets whether or not we should ignore parent's left and right padding. Default is false
-     */
-    public DividerItemDecoration setIgnoreParentPaddings(boolean ignoreParentPaddings) {
-        this.ignoreParentPaddings_ = ignoreParentPaddings;
-        return this;
     }
 
     @Override

@@ -151,9 +151,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                     if (errorMessage == null) {
                                         errorMessage = getString(R.string.error_unexpected_respond);
                                     }
-                                    if (MainActivity.this != null) {
-                                        Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-                                    }
+
+                                    Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                                 }
                             }
                     );

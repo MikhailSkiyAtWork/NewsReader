@@ -7,7 +7,7 @@ import java.net.URL;
  * Created by Mikhail on 30.07.16.
  */
 public class TextHelper {
-    private static String PREFIX = "www";
+    private static final String PREFIX = "www";
     // Include prefix and dot in order to get source name
     private static int START = PREFIX.length() + 1;
 

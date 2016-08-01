@@ -64,15 +64,13 @@ public class AppModule {
     @Provides
     @Singleton
     Picasso providesPicasso(@ForApplication Context context) {
-        Picasso picasso = Picasso.with(context);
-        return picasso;
+        return Picasso.with(context);
     }
 
     @Provides
     @Singleton
-    NewsStorage providesStorage(@ForApplication Context context) {
-        NewsStorage storage = new NewsStorage();
-        return storage;
+    NewsStorage providesStorage() {
+        return new NewsStorage();
     }
 }
 
